@@ -19,7 +19,12 @@ output/*
 Thumbs.db
 *.ttf
 docs/
-data/
+# Only ignore a top-level data/ dir; data-six-sigma/data/ holds the course
+# dataset (da-lss.xlsx) that every notebook loads and must stay tracked.
+/data/
+.ipynb_checkpoints/
+.planning/
+.workbuddy/
 AGENTS.md
 run_gage_rr.py
 create_explanation_pdf.py
