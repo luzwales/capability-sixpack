@@ -108,6 +108,63 @@ Conceptual foundations (markdown files):
 
 ---
 
+## Chart Style
+
+All charts use one shared house style, [`minitab_style.py`](minitab_style.py),
+so the 38 notebooks look like one course rather than 38 separate attempts.
+It applies the Minitab conventions used throughout the parent project:
+
+| Element | Style |
+|---------|-------|
+| Figure background | `#e0e0e0` gray frame |
+| Plot background | white |
+| Data series / within-subgroup | `#1f77b4` blue |
+| Centre line, mean, target | `#2ca02c` green |
+| Control & spec limits, overall | `#d62728` red |
+| Histogram fill / border | `#8cb4e2` / `#4c72b0` |
+| Tolerance highlight | `#ffbf00` gold |
+| Grid | dotted, light gray, primary axis only |
+
+Each notebook's setup cell loads it:
+
+```python
+import sys
+from pathlib import Path as _Path
+sys.path.append(str(_Path.cwd().parent))
+import minitab_style as ms
+
+ms.apply_style()
+```
+
+`apply_style()` sets the rcParams (frame, grid, fonts, color cycle), so even
+raw `plt` / `seaborn` calls inherit the style. For new charts, prefer the
+helpers, which build a correctly-styled figure in one call:
+
+| Helper | Chart |
+|--------|-------|
+| `ms.histogram(values, ...)` | Histogram, optional mean/median/normal fit |
+| `ms.boxplot(values, ...)` | Single-variable boxplot |
+| `ms.boxplot_by_group(df, group, value, ...)` | Boxplot by category |
+| `ms.bar(labels, heights, ...)` | Bar chart with value labels |
+| `ms.pareto(counts, ...)` | Pareto with cumulative-% and 80% rule |
+| `ms.scatter(x, y, fit=True, ...)` | Scatterplot with regression line |
+| `ms.residual_chart(x, y, ...)` | Residuals vs fitted |
+| `ms.probability_plot(values, ...)` | Normal probability plot with AD statistic |
+| `ms.empirical_cdf(values, ...)` | Empirical CDF with normal reference |
+| `ms.control_chart(values, ...)` | I-Chart with 3-sigma limits |
+| `ms.interval_plot(...)` | Interval plot |
+| `ms.annotation_box(ax, title, rows)` | Boxed statistics sidebar |
+
+### Maintenance scripts
+
+| Script | Purpose |
+|--------|---------|
+| `refactor_setup_cells.py` | Inject the style bootstrap into setup cells (`--dry-run` supported) |
+| `refactor_charts.py` | Rewrite ad-hoc colors to the Minitab palette |
+| `run_all_notebooks.py` | Execute every notebook and report pass/fail |
+
+---
+
 ## Tools & Libraries
 
 ```python
@@ -119,6 +176,8 @@ scipy        # Statistical tests
 statsmodels  # Regression, GLM, ANOVA tables
 openpyxl     # Excel file reading
 ```
+
+`minitab_style.py` is local to this course and wraps matplotlib + scipy.
 
 ---
 

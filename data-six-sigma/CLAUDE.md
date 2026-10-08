@@ -57,16 +57,27 @@ See [reference/data-dictionary.ipynb](reference/data-dictionary.ipynb) for compl
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 from scipy import stats
 
-sns.set_style('whitegrid')
+# --- Minitab-style house style -------------------------------------------
+import sys
+from pathlib import Path as _Path
+
+# minitab_style.py lives in the parent folder of each module directory
+sys.path.append(str(_Path.cwd().parent))
+import minitab_style as ms
+
+ms.apply_style()
 
 DATA_FILE = '../data/da-lss.xlsx'
 xlsx = pd.ExcelFile(DATA_FILE)
 
 print('Ready for [topic] analysis!')
 ```
+
+**NEVER** call `sns.set_style()`, `sns.set_theme()` or `plt.style.use()` —
+they fight the house style. `ms.apply_style()` already configures the gray
+figure frame, white plot area, dotted grid, fonts and color cycle.
 
 ### Output Formatting
 
@@ -98,10 +109,50 @@ def load_dataname():
 
 ## Visualization Guidelines
 
-- Use seaborn with `hue` parameter and `legend=False` to avoid deprecation warnings
-- Use matplotlib `tick_labels` instead of deprecated `labels` parameter
-- Match Minitab output style where possible
+**All charts use the shared house style in `minitab_style.py`.** Never
+hand-pick colors or call `sns.set_style()`.
+
+### Preferred: use the helpers
+
+Each returns a fully-styled figure in one call.
+
+```python
+ms.histogram(df['col'], title_text='Histogram of col', xlabel='col', normal_fit=True)
+ms.boxplot(df['col'], ylabel='col')
+ms.boxplot_by_group(df, 'shift', 'col', xlabel='Shift', ylabel='col')
+ms.bar(df['cat'].value_counts().index, df['cat'].value_counts().values, xlabel='Category')
+ms.pareto(df['cause'].value_counts(), xlabel='Cause')
+ms.scatter(df['x'], df['y'], fit=True, xlabel='X', ylabel='Y')
+ms.residual_chart(df['x'], df['y'], xlabel='X')
+ms.probability_plot(df['col'])
+ms.empirical_cdf(df['col'])
+ms.control_chart(df['col'], ylabel='col')
+ms.interval_plot(centers, lows, highs, labels)
+```
+
+### When raw matplotlib/seaborn is unavoidable
+
+`ms.apply_style()` still applies the frame, grid, fonts and color cycle, so
+inherit it and use the palette constants:
+
+```python
+ax.bar(x, y, color=ms.HIST_FILL, edgecolor=ms.HIST_EDGE)   # bars/histograms
+ax.plot(x, y, color=ms.BLUE)          # data series / within-subgroup
+ax.axhline(v, color=ms.RED)           # control & spec limits
+ax.axhline(v, color=ms.GREEN)         # centre line / mean / target
+colors=ms.CATEGORICAL                 # multi-category pies and bars
+```
+
+- Use `tick_labels`, never the removed `labels` kwarg (matplotlib >= 3.9)
+- Use seaborn with `hue` + `legend=False` to avoid deprecation warnings
 - Add clear titles and axis labels
+
+### Before committing a notebook
+
+```bash
+python run_all_notebooks.py            # execute all, report pass/fail
+python run_all_notebooks.py --module 6 # just module 6
+```
 
 ---
 

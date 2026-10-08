@@ -1415,7 +1415,7 @@ def _plot_measurements_by_part(ax: plt.Axes, df: pd.DataFrame) -> None:
 def _plot_measurements_by_operator(ax: plt.Axes, df: pd.DataFrame) -> None:
     operators = _sort_labels(df["operator"].unique())
     data = [df[df["operator"] == operator]["measurement"].values for operator in operators]
-    ax.boxplot(data, labels=operators, patch_artist=True, boxprops=dict(facecolor="#8cb4e2", color="#4c72b0"))
+    ax.boxplot(data, tick_labels=operators, patch_artist=True, boxprops=dict(facecolor="#8cb4e2", color="#4c72b0"))
     _title(ax, "Measurement by Operator", pad=10)
     ax.set_xlabel("Operator", fontsize=9)
     ax.grid(True, axis="y", linestyle=":", alpha=0.6)
