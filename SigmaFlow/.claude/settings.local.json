@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pdflatex --version)",
+      "Bash(xelatex --version)",
+      "Bash(python:*)",
+      "Bash(grep -E \"^#{1,3} \" output/reports/process_analysis_report.md)",
+      "Bash(ls -la docs/*.md)",
+      "Bash(ls -la *.md)",
+      "Read(//c/Users/dmnandlu/.claude/skills/**)",
+      "Bash(mkdir -p ~/.claude/skills)"
+    ]
+  }
+}

@@ -10,6 +10,9 @@ output/*
 !output/sixpack_report.png
 !output/gage_rr_*
 !output/capability_analysis_*
+!SigmaFlow/reports/figures/*.png
+!SigmaFlow/reports/*.pptx
+!SigmaFlow/templates/*.xlsx
 *.log
 *.tmp
 *.temp
