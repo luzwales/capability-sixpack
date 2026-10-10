@@ -1,170 +1,78 @@
-# Capability Sixpack Report
+# Six Sigma DMAIC & Capability Sixpack Toolkit
 
-Generate Minitab-style capability sixpack, capability analysis, and Gage R&R reports with Python and Matplotlib.
+> **基于 Python + Matplotlib 的专业级精益六西格玛（Lean Six Sigma）统计分析、Minitab 经典出图引擎与过程能力六合一报告系统。**
 
-## Features
+---
 
-- **Capability Sixpack** - I/MR control charts, histogram, probability plot, last 25 observations, and capability indices (Cp, Cpk, Pp, Ppk, Cpm)
-- **Capability Analysis (Normal)** - Capability histogram with process data, overall/within indices, and PPM performance summary
-- **Gage R&R Study (ANOVA)** - Full ANOVA analysis with variance components, % study variation, % tolerance, and distinct categories
-- **MSA Assistant** - Automated interpretation of Gage R&R results with pass/fail assessment against AIAG MSA guidelines
+## 🌟 核心组成模块
 
-## Example Output
+本仓库由两大核心模块构成：
 
-### Capability Sixpack
-![Sixpack report preview](output/sixpack_report.png)
+### 1. [SigmaFlow](./SigmaFlow/) — 六西格玛 DMAIC 统计工程全流程系统
+专为六西格玛黑带（Black Belt）与绿带（Green Belt）实战项目打造，包含完整的 DMAIC 五阶段分析体系、Minitab 经典出图引擎与工业级数据模板：
+- **`SigmaFlow/notebooks/`**: 5 个按阶段编排的交互式 Jupyter Notebook（`01_define` 至 `05_control`），涵盖 SIPOC、Sixpack、Gage R&R、假设检验、方差分析、多元回归、DOE 试验设计、SPC 控制图矩阵等。
+- **`SigmaFlow/minitab_dmaic_visuals.py`**: 原生 Minitab 统计绘图引擎，实现包括**Graph 菜单全谱系**（散点图、边际图、矩阵散点图、气泡图、茎叶图、概率图、经验 CDF、单值图、折线图等）、**6M 特性要因图（鱼骨图）**、**图形化汇总报告 (Summary Report)** 以及 **全套 SPC 控制图（I-MR, Xbar-R, P, NP, C, U）**。
+- **`SigmaFlow/templates/`**: 配套 5 套真实制造工程情境的 Excel 数据源模板。
+- **`SigmaFlow/reports/`**: 包含已渲染的高清统计图表与 11 页高管实战汇报演示文稿（`Six_Sigma_DMAIC_Project_Report.pptx`）。
 
-### Capability Analysis (Normal)
-![Capability analysis preview](output/capability_analysis_report.png)
+👉 **详细功能与使用指南请参阅 [SigmaFlow/README.md](./SigmaFlow/README.md)**。
 
-### Gage R&R Report
-![Gage R&R report preview](output/gage_rr_report.png)
+---
 
-### MSA Assistant
-![MSA Assistant preview](output/gage_rr_assistant.png)
+### 2. [Capability Sixpack](./notebooks/capability_reports.ipynb) — 独立过程能力六合一与 Gage R&R
+专注工序能力评价与测量系统分析，支持直接通过 Python 脚本或交互式 Notebook 快速生成：
+- **Capability Sixpack (六合一报告)**: 整合 I/MR 控制图、能力直方图、正态概率图、散点运行图与完整工序能力指数 ($C_p, C_{pk}, P_p, P_{pk}, C_{pm}$)
+- **Capability Analysis (正态能力分析)**: 带规格限公差、整体与组内正态拟合曲线、PPM 不合格品预估
+- **Gage R&R Study (双因素方差分析法)**: 评价人与部件变异分量表、%Study Var 及可区分类别数 $ndc$
+- **MSA Assistant (测量系统评定仪表盘)**: 依据 AIAG MSA 指南自动判定合格性并提供改进建议
 
-## Quick Start
+---
 
-### Interactive notebook (recommended)
+## 📁 项目目录结构
 
-![Capability reports notebook](output/sixpack_report.png)
+```text
+.
+├── SigmaFlow/                                # 六西格玛 DMAIC 统计工程核心体系
+│   ├── minitab_dmaic_visuals.py             # 核心绘图库 (全套 Minitab 统计图表与 SPC 图)
+│   ├── notebooks/                           # 01_define 到 05_control 五大阶段 Notebook
+│   ├── templates/                           # DMAIC 01 至 05 配套 Excel 数据模板
+│   ├── reports/                             # 包含汇报 PPTX 与已渲染图表 figures/
+│   └── README.md                            # SigmaFlow 详细中文技术文档
+├── notebooks/
+│   └── capability_reports.ipynb             # 过程能力六合一与 Gage R&R 交互式 Notebook
+├── src/
+│   └── sixpack_report.py                    # 独立过程能力分析底层代码
+├── output/                                  # 根目录示例输出图像
+├── generate_dmaic_excel_templates.py        # 模板生成与数据刷新脚本
+├── generate_dmaic_notebooks.py              # Notebook 代码生成与批量重构流水线
+├── generate_dmaic_presentation.py           # 自动化生成高管汇报 PPTX 脚本
+└── requirements.txt                         # 项目依赖清单
+```
 
-[`notebooks/capability_reports.ipynb`](notebooks/capability_reports.ipynb) renders
-every report **inline** — sixpack, capability analysis, gage R&R and the MSA
-assistant — while writing the same PNG files to `output/`. It imports
-`src/sixpack_report.py` rather than duplicating the logic, so the notebook and
-the CLI can never drift apart.
+---
 
-### Capability Sixpack
+## 🚀 快速上手
+
+### 1. 安装依赖
+```bash
+pip install numpy pandas matplotlib scipy statsmodels openpyxl python-pptx
+```
+
+### 2. 运行 DMAIC 阶段分析
+进入 `SigmaFlow/notebooks/` 目录并启动 Jupyter：
+```bash
+cd SigmaFlow/notebooks
+jupyter notebook
+```
+依次执行 `01_define_phase.ipynb` 至 `05_control_phase.ipynb` 即可体验全套统计检验与图表输出。
+
+### 3. 生成过程能力六合一报告
 ```bash
 python src/sixpack_report.py --download-fonts
 ```
 
-### Capability Analysis (Normal)
-```bash
-python src/sixpack_report.py --capability-analysis --download-fonts
-```
+---
 
-### Gage R&R Study
-```bash
-python src/sixpack_report.py --gage-rr --download-fonts
-```
+## 📄 许可证
 
-## Usage
-
-### Capability Sixpack
-
-```python
-from pathlib import Path
-from src.sixpack_report import CapabilitySpecs, generate_sixpack
-
-values = [
-    104.0, 104.4, 103.8, 105.1, 104.9,
-    105.2, 104.7, 104.1, 104.6, 105.0,
-]
-specs = CapabilitySpecs(lsl=103.0, usl=110.0, target=104.0)
-
-stats = generate_sixpack(
-    values,
-    specs,
-    "Process Capability Sixpack Report",
-    Path("output/sixpack_report.png"),
-)
-
-print(stats)
-```
-
-### Capability Analysis (Normal)
-
-```python
-from pathlib import Path
-from src.sixpack_report import CapabilitySpecs, generate_capability_analysis
-
-values = [
-    104.0, 104.4, 103.8, 105.1, 104.9,
-    105.2, 104.7, 104.1, 104.6, 105.0,
-]
-specs = CapabilitySpecs(lsl=103.0, usl=110.0, target=104.0)
-
-result = generate_capability_analysis(
-    values,
-    specs,
-    "Process Capability Report",
-    Path("output/capability_analysis_report.png"),
-)
-
-print(result.stats)
-```
-
-### Gage R&R Study
-
-```python
-from pathlib import Path
-from src.sixpack_report import (
-    GageRrRecord, GageRrSpecs, generate_gage_rr_report
-)
-
-# Your measurement data
-records = [
-    GageRrRecord(part="1", operator="A", measurement=10.02),
-    GageRrRecord(part="1", operator="A", measurement=10.05),
-    # ... more measurements
-]
-
-specs = GageRrSpecs(
-    tolerance=8.0,
-    gage_name="Calipers",
-    reported_by="Quality Engineer",
-)
-
-result = generate_gage_rr_report(
-    records,
-    "Gage R&R (ANOVA) Report",
-    Path("output/gage_rr_report.png"),
-    specs=specs,
-    assistant_output_path=Path("output/gage_rr_assistant.png"),
-)
-
-print(f"Distinct Categories: {result.distinct_categories}")
-print(f"Interaction p-value: {result.interaction_p_value:.3f}")
-```
-
-## Project Notes
-
-- Download fonts once: `python src/sixpack_report.py --download-fonts` fetches Plus Jakarta Sans into `src/assets/fonts/plus_jakarta_sans`
-- Reports automatically use downloaded fonts when present
-- Gage R&R follows AIAG MSA guidelines for ANOVA analysis and variance component calculation
-- MSA Assistant interprets %Study Var and %Tolerance against standard criteria (<10% acceptable, 10-30% marginal, >30% unacceptable)
-
-## Repository Layout
-
-| Path | Contents |
-|------|----------|
-| `src/sixpack_report.py` | Report engine: capability, gage R&R, MSA assistant (CLI + importable API) |
-| `notebooks/` | Interactive notebook rendering every report inline |
-| `data-six-sigma/` | The Data Analytics for Lean Six Sigma course: 38 notebooks + shared chart style |
-| `data-six-sigma/minitab_style.py` | Shared Minitab-style plotting helpers used by every course notebook |
-| `output/` | Generated PNG reports |
-
-`notebooks/capability_reports.ipynb` is generated by
-`python build_sixpack_notebook.py`; edit that script, not the `.ipynb`, so the
-notebook can be rebuilt deterministically.
-
-## The Lean Six Sigma Course Notebooks
-
-`data-six-sigma/` adapts the University of Amsterdam *Data Analytics for Lean
-Six Sigma* course from Minitab to Python. All 38 notebooks share one visual
-language via [`data-six-sigma/minitab_style.py`](data-six-sigma/minitab_style.py)
-— Minitab's `#e0e0e0` gray frame, white plot area, blue data series, green
-centre lines, red control limits, dotted grid.
-
-```bash
-cd data-six-sigma
-pip install -r requirements.txt
-
-python run_all_notebooks.py             # execute all 38, report pass/fail
-python run_all_notebooks.py --module 6  # just one module
-```
-
-See [`data-six-sigma/README.md`](data-six-sigma/README.md) for the chart-style
-reference and maintenance scripts.
+本项目遵循 MIT 开源许可证。
